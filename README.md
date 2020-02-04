@@ -69,6 +69,7 @@ To run EMP Connector using the `LoginExample` class with username and password a
 To run EMP Connector using the `DevLoginExample` class with username and password authentication, use this command.
 
 `$ java -classpath target/emp-connector-0.0.1-SNAPSHOT-phat.jar com.salesforce.emp.connector.example.DevLoginExample <login_URL> <username> <password> <channel> [optional_replay_id]`
+
 `$ java -classpath target/emp-connector-0.0.1-SNAPSHOT-phat.jar com.salesforce.emp.connector.example.DevLoginExampleNewRelic <login_URL> <username> <password> <channel> <nr_license_key> [optional_replay_id]`
 
 
