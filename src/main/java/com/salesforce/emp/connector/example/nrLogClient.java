@@ -22,13 +22,23 @@ import java.util.Date;
 
 public class nrLogClient {
   private String httpEndpoint = "https://log-api.newrelic.com/log/v1";
+
   private String nrLicenseKey;
+
   public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-  OkHttpClient client = new OkHttpClient();
-  public void nrLogClient(String licenseKey) 
+  private OkHttpClient client ;
+
+  public nrLogClient(String key) 
   {
-      nrLicenseKey = licenseKey; 
+			nrLicenseKey = key;
+  		client = new OkHttpClient();
+
+  }
+
+  public nrLogClient() 
+  {
+  		client = new OkHttpClient();
   }
 
   public String post(String json) throws IOException 
@@ -44,7 +54,7 @@ public class nrLogClient {
 			}
   }
   
-  public String sendSample(String message) 
+  public String sendSample(String message) throws IOException
   {
       String[] msgs = new String[1];
       msgs[0] = message;
@@ -55,17 +65,7 @@ public class nrLogClient {
       
   }
 
-  public static boolean isJSONValid(String jsonInString ) {
-    try {
-       final ObjectMapper mapper = new ObjectMapper();
-       mapper.readTree(jsonInString);
-       return true;
-    } catch (IOException e) {
-       return false;
-    }
-  }
-
-  public String sendLogs(String[] messages, Map<String,String> attributes) 
+  public String sendLogs(String[] messages, Map<String,String> attributes) throws IOException
   {
       // detail json format
     ObjectMapper mapper = new ObjectMapper();
@@ -75,6 +75,8 @@ public class nrLogClient {
     ObjectNode common = mapper.createObjectNode();
     Date date = new Date(); 
     String ts = "test me"; //date.getTime()
+		String response;
+
    /* 
     for (Map.Entry<String,String> entry : attributes.entrySet()) {
         System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
@@ -100,7 +102,11 @@ public class nrLogClient {
     
     String jsonString =  rootNode.toString();
     System.out.println(jsonString);
-    return jsonString;
+
+    response = post(jsonString);
+
+    System.out.println(response);
+    return response;
   }
 
   public void setEndpoint(String newEndPoint) 
@@ -114,20 +120,15 @@ public class nrLogClient {
   }
 
   public static void main(String[] args) throws IOException {
-    nrLogClient client = new nrLogClient();
+    nrLogClient nrClient ;
 		if ( args.length > 0 ) {
     	System.out.println("license key - " + args[0]);
-
-			client.setLicenseKey(args[0]);
-
+		  nrClient = new nrLogClient(args[0]);
+			nrClient.setLicenseKey(args[0]);
     	String myStr = "{ \"brand\" : \"Mercedes\", \"doors\" : 5 }";
     	myStr = "testme";
-
-    	String json = client.sendSample(myStr);
-    	String response = client.post(json);
-    	System.out.println(response);
+    	String json = nrClient.sendSample(myStr);
 		}
-
 
   }
 
