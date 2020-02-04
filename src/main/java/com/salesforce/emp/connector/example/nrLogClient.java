@@ -54,7 +54,7 @@ public class nrLogClient {
 			}
   }
   
-  public String sendSample(String message) throws IOException
+  public String sendSample(String message) 
   {
       String[] msgs = new String[1];
       msgs[0] = message;
@@ -65,7 +65,7 @@ public class nrLogClient {
       
   }
 
-  public String sendLogs(String[] messages, Map<String,String> attributes) throws IOException
+  public String sendLogs(String[] messages, Map<String,String> attributes) 
   {
       // detail json format
     ObjectMapper mapper = new ObjectMapper();
@@ -103,7 +103,11 @@ public class nrLogClient {
     String jsonString =  rootNode.toString();
     System.out.println(jsonString);
 
-    response = post(jsonString);
+		try {
+    	response = post(jsonString);
+		} catch (IOException e) {
+			response = e.getCause().toString();
+		}
 
     System.out.println(response);
     return response;

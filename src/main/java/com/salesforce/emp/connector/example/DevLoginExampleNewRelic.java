@@ -58,17 +58,17 @@ public class DevLoginExampleNewRelic {
         
         EmpConnector connector = new EmpConnector(params);
         LoggingListener loggingListener = new LoggingListener(true, true);
-
+				/* 
         connector.addListener(META_HANDSHAKE, loggingListener)
                 .addListener(META_CONNECT, loggingListener)
                 .addListener(META_DISCONNECT, loggingListener);
-			/*					
         connector.addListener(META_HANDSHAKE, loggingListener)
                 .addListener(META_CONNECT, loggingListener)
                 .addListener(META_DISCONNECT, loggingListener)
                 .addListener(META_SUBSCRIBE, loggingListener)
                 .addListener(META_UNSUBSCRIBE, loggingListener);
-*/
+				*/
+
         connector.setBearerTokenProvider(tokenProvider);
 
         connector.start().get(5, TimeUnit.SECONDS);
@@ -77,6 +77,7 @@ public class DevLoginExampleNewRelic {
         if (argv.length == 6) {
             replayFrom = Long.parseLong(argv[4]);
         }
+
         TopicSubscription subscription;
         try {
             subscription = connector.subscribe(argv[3], replayFrom, consumer).get(5, TimeUnit.SECONDS);
