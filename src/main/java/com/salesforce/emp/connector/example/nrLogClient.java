@@ -65,6 +65,17 @@ public class nrLogClient {
       
   }
 
+  public String sendWithFields(String message,Map<String,String> fields) 
+  {
+      String[] msgs = new String[1];
+      msgs[0] = message;
+      //Map <String,String> attrs = new HashMap();
+      //attrs.put("service","salesforce platform event");
+      //attrs.put("hostname","nr-log-api");
+      return sendLogs(msgs, fields);
+      
+  }
+
   public String sendLogs(String[] messages, Map<String,String> attributes) 
   {
       // detail json format

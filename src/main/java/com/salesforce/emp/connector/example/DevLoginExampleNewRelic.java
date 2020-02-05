@@ -13,6 +13,7 @@ import com.salesforce.emp.connector.TopicSubscription;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -43,7 +44,11 @@ public class DevLoginExampleNewRelic {
 
         Consumer<Map<String, Object>> consumer = event -> {
 					System.out.println(String.format("Received:\n%s", JSON.toString(event)));
-					logClient.sendSample(JSON.toString(event));
+					Map<String,String> atts = new HashMap();
+					atts.put("channel",argv[3]);
+					atts.put("service_name","Salesforce Platform Event");
+					atts.put("source",argv[0]);
+					logClient.sendWithFields(JSON.toString(event),atts);
 					};
 
         BearerTokenProvider tokenProvider = new BearerTokenProvider(() -> {
