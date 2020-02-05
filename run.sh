@@ -4,7 +4,8 @@
 host="https://login.salesforce.com"
 
 
-java_path="target/emp-connector-0.0.1-SNAPSHOT-phat.jar"
+#java_path="target/emp-connector-0.0.1-SNAPSHOT-phat.jar"
+java_path="emp-connector-0.0.1-SNAPSHOT-phat.jar"
 class_name="com.salesforce.emp.connector.example.DevLoginExampleNewRelic"
 
 pids=()
@@ -20,4 +21,14 @@ done <<EOF
 /event/UriEventStream
 EOF
 
-echo "stop - kill ${pids[@]} "
+echo "Kill process? type yes to kill:"
+while read resp ; 
+do
+  if [ "X$resp" == "Xyes" ] ; then
+		kill ${pids[@]}
+		exit
+	else
+		echo "Kill process? type yes to kill:"
+	fi
+done
+
